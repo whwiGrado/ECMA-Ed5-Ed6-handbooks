@@ -55,6 +55,27 @@ function foo() {
 }
 foo() // 处在块级作用域内，不在顶级作用域里
 ```
+export语句输出的接口，与其对应的值是动态绑定关系，即通过该接口，可以取到模块内部实时的值
+```javascript
+export var foo = 'bar';
+setTimeout(() => foo = 'baz', 500);
+// 上面代码输出变量foo，值为bar，500 毫秒之后变成baz。
+
+// 这一点与 CommonJS 规范完全不同。CommonJS 模块输出的是值的缓存，不存在动态更新
+```
+
+## export default 用法
+export default 命令规定的是对外的默认方法，本质是将后面的值，赋给default变量
+```javascript
+// 下列输出是合法的
+export default 1;
+
+var m = 1;
+export default m;
+
+// 下列输出是不合法的
+export default var firstName = 'Michael';
+```
 
 ## import 用法
 * import 命令具有提升效果，是编译阶段执行的，在代码运行之前
@@ -122,7 +143,7 @@ export { foo as default } from 'my_module';
 * 目前阶段，通过 Babel 转码，CommonJS 模块的require命令和 ES6 模块的import命令，可以写在同一个模块里面，但是最好不要这样做，因为import在静态解析阶段执行，所以它是一个模块之中最早执行的
 
 ## export 与 import 的复合写法
-* 写法总结
+* 有复合写法的 import 命令总结
 ```javascript
 // 下面的 import 语句有 export 复合写法，具体写法以及复合写法与正常写法的区别见下文
 import { someIdentifierA, someIdentifierB } from 'someModule';
@@ -168,3 +189,41 @@ export * from 'my_module';
 ```javascript
 export { default } from 'my_module';
 ```
+
+## 模块的继承
+
+```javascript
+export * from 'circle';
+export var e = 2.71828182846;
+export default function(x) {
+  return Math.exp(x);
+}
+```
+上面代码中的export *，表示再输出circle模块的所有属性和方法。注意，export *命令会忽略circle模块的default方法。然后，上面代码又输出了自定义的e变量和默认方法。
+
+## 跨模块常量
+```javascript
+// 跨模块输出
+// constants/db.js
+export const db = {
+  url: 'http://my.couchdbserver.local:5984',
+  admin_username: 'admin',
+  admin_password: 'admin password'
+};
+
+// constants/user.js
+export const users = ['root', 'admin', 'staff', 'ceo', 'chief', 'moderator'];
+
+// 统一入口
+// constants/index.js
+export {db} from './db';
+export {users} from './users';
+
+// 使用统一入口
+import {db, users} from './constants/';
+```
+
+## import() 实现 dynamic import
+
+[万岁，浏览器原生支持ES6 export和import模块啦！](https://www.zhangxinxu.com/wordpress/2018/08/browser-native-es6-export-import-module/)
+[翻译 | 原生 ECMAScript 模块：动态 import（）](https://juejin.im/entry/58ba3308a22b9d005ede7565)
