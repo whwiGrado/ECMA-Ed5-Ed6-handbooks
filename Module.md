@@ -9,7 +9,7 @@ foo();
 import { foo } from 'my_module';
 ```
 
-- import 命令是静态执行，所以不能使用表达式和变量，这些只有在运行时才能得到结果的语法结构
+* import 命令是静态执行，所以不能使用表达式和变量，这些只有在运行时才能得到结果的语法结构
 ```
 // 报错
 import { 'f' + 'oo' } from 'my_module';
@@ -26,7 +26,7 @@ if (x === 1) {
 }
 ```
 
-- import 进来的变量是只读的，直接赋值会报错，但改写对象的属性是允许的
+* import 进来的变量是只读的，直接赋值会报错，但改写对象的属性是允许的
 ```
 import { foo } from 'my_module'
 
@@ -37,7 +37,7 @@ foo.name = 'something';
 // 不会报错
 ```
 
-- import 整体加载到一个对象，是可以静态分析的，所以不允许运行时改变
+* import 整体加载到一个对象，是可以静态分析的，所以不允许运行时改变
 ```
 import * as circle from './circle';
 
@@ -46,7 +46,7 @@ circle.foo = 'hello';
 circle.area = function () {};
 ```
 
-- import 命令是单例模式
+* import 命令是单例模式
 ```
 import { foo } from 'my_module';
 import { bar } from 'my_module';
@@ -55,7 +55,7 @@ import { bar } from 'my_module';
 import { foo, bar } from 'my_module';
 ```
 
-- import 变量重命名
+* import 变量重命名
 ```
 import { foo as myFoo } from 'my_module';
 //
@@ -64,12 +64,10 @@ export { foo as default } from 'my_module';
 //
 ```
 
-- 目前阶段，通过 Babel 转码，CommonJS 模块的require命令和 ES6 模块的import命令，可以写在同一个模块里面，但是最好不要这样做，因为import在静态解析阶段执行，所以它是一个模块之中最早执行的
+* 目前阶段，通过 Babel 转码，CommonJS 模块的require命令和 ES6 模块的import命令，可以写在同一个模块里面，但是最好不要这样做，因为import在静态解析阶段执行，所以它是一个模块之中最早执行的
 
-
-
-export 与 import 的复合写法
-- 写法总结
+## export 与 import 的复合写法
+* 写法总结
 ```
 // 下面的 import 语句有 export 复合写法，具体写法以及复合写法与正常写法的区别见下文
 import { someIdentifierA, someIdentifierB } from 'someModule';
@@ -91,9 +89,10 @@ export { foo, bar } from 'my_module';
 // 等同于
 import { foo, bar } from 'my_module';
 export { foo, bar };
+```
 上面代码中，export和import语句可以结合在一起，写成一行。但需要注意的是，写成一行以后，foo和bar实际上并没有被导入当前模块，只是相当于对外转发了这两个接口，导致当前模块不能直接使用foo和bar
 
-- 具体接口改名输出
+* 具体接口改名输出
 ```
 // 改为具体接口（换名）输出
 export { foo as myFoo } from 'my_module';
@@ -105,12 +104,12 @@ import { foo } from './my_module';
 export default foo;
 ```
 
-- 整体输出
+* 整体输出
 ```
 export * from 'my_module';
 ```
 
-- 默认接口输出
+* 默认接口输出
 ```
 export { default } from 'my_module';
 ```
