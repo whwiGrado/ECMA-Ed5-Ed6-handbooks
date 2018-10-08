@@ -27,8 +27,8 @@ var Singleton = (function(){
 
 ### es6 惰性单例实现
 
-```
-// 负责创建DIV的基本功能
+```javascript
+// 创建单例的类
 class CreateSingleton {
     constructor(name) {
         this.name = name;
@@ -38,7 +38,7 @@ class CreateSingleton {
         console.log(this.name)
     }
 }
-// 负责管理单例
+// 代理模式管理单例
 class ProxysingletonCreateSingleton {
     constructor(name) {
         return ProxysingletonCreateSingleton.getInstance(name);
