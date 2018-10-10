@@ -43,3 +43,43 @@ if (typeof Object.create !== 'function') {
   };
 }
 ```
+
+# 与 new 操作符的区别
+## 先来看一些 new 操作符的定义与实现
+### 使用 new 操作符调用构造函数实际上会经历以下4个步骤：
+1. 创建一个新对象
+2. 将构造函数的作用域赋给新对象（因此 this 就指向了这个对象）
+3. 执行构造函数中的代码（为这个新对象添加属性）
+4. 返回新对象
+### 模拟实现一个 newFunc 函数来模拟 new 操作符
+```javascript
+function newFunc (constructor){
+    var o = {}; // 创建一个新对象
+    o.__proto__ = constructor.prototype; // 绑定构造函数的原型
+    constructor.apply(o, Array.prototype.slice.call(arguments, 1)); // 将构造函数的作用域赋给新对象（因此 this 就指向了这个对象）
+    return o; // 返回新对象
+}
+```
+### 校验 newFunc 的实现
+```javascript
+function Person(name, sex) {
+   this.name = name;
+   this.sex = sex;
+}
+Person.prototype.getInfo = function() {
+   console.log('getInfo: [name:' + this.name + ', sex:' + this.sex + ']');
+}
+
+var personA = new Person('john', 'female');
+var personB = newFunc(Person, 'jack', 'male');
+console.log(personA instanceof Person) // true
+console.log(personB instanceof Person) // true
+```
+
+
+function Adult(age) {
+ this.age = age;
+}
+Adult.prototype.say = function(language) { 
+    console.log('you say ' + language);
+}
