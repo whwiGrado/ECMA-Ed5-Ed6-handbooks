@@ -42,12 +42,12 @@ function extend(Sub, Super) {
 extend(Cat, Animal);
 ```
 
-## 方法四：深拷贝
+## 方法四：使用深拷贝将父类 prototype 
 ```javascript
-
 function extend(Sub, Super) {
   var superP = Super.prototype;
   var subP = Sub.prototype;
+  // 使用 jQuery 的深拷贝方法 extend
   jQuery.extend(true, subP, superP)
 }
 ```
