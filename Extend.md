@@ -1,6 +1,6 @@
 # 构造函数的继承
 两个对象都是构造函数，有下列五种方法实现继承。
-```
+```javascript
 function Animal(scale){
   this.scale = scale;
 }
