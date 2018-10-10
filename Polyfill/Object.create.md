@@ -10,7 +10,9 @@ if (typeof Object.create !== 'function') {
       throw new Error('This browser\'s implementation of Object.create is a shim and doesn\'t support \'null\' as the first argument.');
     }
 
-    if (typeof propertiesObject != 'undefined') throw new Error('This browser\'s implementation of Object.create is a shim and doesn\'t support a second argument.');
+    if (typeof propertiesObject != 'undefined') {
+      throw new Error('This browser\'s implementation of Object.create is a shim and doesn\'t support a second argument.');
+    }
 
     function F() {}
     F.prototype = proto;
